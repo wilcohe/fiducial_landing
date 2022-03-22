@@ -10,10 +10,13 @@ project(april_land)
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   roscpp
+  apriltag_ros
 )
 
+find_package(Eigen3 REQUIRED)
+
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -117,7 +120,12 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${EIGEN3_INCLUDE_DIRS}
 )
+
+add_executable(
+  pose_estimator_node
+  src/pose_estimator_node.cpp)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
@@ -155,6 +163,21 @@ include_directories(
 
 # all install targets should use catkin DESTINATION variables
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
+
+target_link_libraries(
+  pose_estimator_node
+  ${catkin_LIBRARIES}
+)
+
+install(
+  TARGETS
+  pose_estimator_node
+)
+
+install(
+  DIRECTORY config data doc launch rviz scripts
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
@@ -203,3 +226,11 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+
+find_package(cmake_clang_tools QUIET)
+if(cmake_clang_tools_FOUND)
+  add_default_clang_tooling(
+    DISABLE_CLANG_FORMAT
+  )
+endif(cmake_clang_tools_FOUND)
