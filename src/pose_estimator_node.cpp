@@ -26,7 +26,7 @@ class PositionEstimator{
     ROS_INFO("Starting Pose Estimator");
     pos_pub = nh.advertise<geometry_msgs::Pose>("position", 100, true);
     ROS_INFO("Pose publisher initialized"); 
-    detect_sub = nh.subscribe("tag_detections", 10, &PositionEstimator::positionCallback, this);
+    detect_sub = nh.subscribe("/tag_detections", 10, &PositionEstimator::positionCallback, this);
     ROS_INFO("Detection subscriber initialized"); 
     // glob_pts << -0.5, -0.5, 0.1, 1.0, -0.5, 0.5, 0.1, 1.0, 0.5, -0.5, 0.1, 1.0, 0.5, 0.5, 0.1, 1.0; 
     ROS_INFO("Finished Pose Estimator");
