@@ -22,21 +22,23 @@ class PositionEstimator{
 
   Eigen::MatrixXf glob_pts;   
 
-  PositionEstimator(){
+  PositionEstimator(ros::NodeHandle nh){
+    ROS_INFO("Starting Pose Estimator");
     pos_pub = nh.advertise<geometry_msgs::Pose>("position", 100, true);
     detect_sub = nh.subscribe("tag_detections", 10, &PositionEstimator::positionCallback, this);
     glob_pts << -0.5, -0.5, 0.1, 1.0, -0.5, 0.5, 0.1, 1.0, 0.5, -0.5, 0.1, 1.0, 0.5, 0.5, 0.1, 1.0; 
+    ROS_INFO("Finished Pose Estimator");
   }
 
  private: 
 
   // Eigen::MatrixXf glob_pts; 
-
-  ros::NodeHandle nh;
   ros::Publisher pos_pub; 
   ros::Subscriber detect_sub; 
 
   void positionCallback(const apriltag_ros::AprilTagDetectionArray det){
+
+    ROS_INFO("Position Called");
 
    int num = det.detections.size();
 
@@ -83,7 +85,12 @@ class PositionEstimator{
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "pose_estimator");
-  PositionEstimator pose_estimator;  
+  ROS_INFO("Initializing.");
+
+  ros::NodeHandle nh("~");
+
+  PositionEstimator pose_estimator(nh);  
+
 
  // ROS_INFO_THROTTLE(1.0, "Pose estimator initialized. "); 
   ros::spin(); 
