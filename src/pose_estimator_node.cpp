@@ -64,7 +64,7 @@ class PositionEstimator{
 
    // for (auto& det.detections : *it){
    // for (auto it det.begin(); it < det.end(); ++it){
-   for (int i = 0; i < num; i++){
+   for (int i = 0; i < 4; i++){
 
     centroid.x += det.detections[i].pose.pose.pose.position.x/i;
     centroid.y += det.detections[i].pose.pose.pose.position.y/i; 
