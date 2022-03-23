@@ -55,7 +55,7 @@ class PositionEstimator{
 
    int num = det.detections.size();
 
-   Eigen::MatrixXf camera = Eigen::MatrixXf::Zero(4, 4); 
+   Eigen::Matrix4f camera = Eigen::MatrixXf::Zero(4, 4); 
 
    // if (num < 3)
    //  return ;
