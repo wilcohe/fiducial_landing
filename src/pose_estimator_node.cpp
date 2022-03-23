@@ -45,7 +45,7 @@ class PositionEstimator{
  private: 
 
   // Eigen::MatrixXf glob_pts;
-  Eigen::MatrixXf glob_pts;  
+  Eigen::Matrix4f glob_pts;  
   ros::Publisher pos_pub; 
   ros::Subscriber detect_sub; 
 
