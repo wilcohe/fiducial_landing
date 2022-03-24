@@ -12,9 +12,11 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   mav_msgs
   nav_msgs
+  trajectory_msgs
   roscpp
   apriltag_ros
   mav_trajectory_generation
+  eigen_conversions
 )
 
 find_package(Eigen3 REQUIRED)
@@ -74,10 +76,13 @@ find_package(Boost REQUIRED COMPONENTS system)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   geometry_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  geometry_msgs
+  nav_msgs
+  mav_msgs
+  trajectory_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
