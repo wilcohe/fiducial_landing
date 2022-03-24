@@ -9,7 +9,7 @@ project(april_land)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
-  geometry2
+  tf2_geometry_msgs
   mav_msgs
   roscpp
   apriltag_ros
