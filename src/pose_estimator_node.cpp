@@ -61,7 +61,7 @@ class PositionEstimator{
     ROS_INFO("Not enough detections.");
     return ;
 
-   geometry_msgs::Point centroid; 
+   geometry_msgs::Pose centroid; 
 
    // for (auto& det.detections : *it){
    // for (auto it det.begin(); it < det.end(); ++it){
@@ -87,9 +87,9 @@ class PositionEstimator{
 
    Eigen::Matrix4f sol = camera.ldlt().solve(glob_pts); 
 
-   centroid.x = sol(3, 0); 
-   centroid.y = sol(3, 1); 
-   centroid.z = sol(3, 2); 
+   centroid.position.x = sol(3, 0); 
+   centroid.position.y = sol(3, 1); 
+   centroid.position.z = sol(3, 2); 
 
    pos_pub.publish(centroid); 
 
