@@ -8,6 +8,9 @@
 
 #include <mav_trajectory_generation/polynomial_optimization_linear.h>
 #include <mav_trajectory_generation/trajectory.h>
+
+#include <mav_msgs/eigen_mav_msgs.h>
+
 #include <eigen_conversions/eigen_msg.h>
 #include <tf/transform_datatypes.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
@@ -20,7 +23,7 @@ class TrajGenerator {
     goalPoseSub = nh.subscribe("/goal", 10, &TrajGenerator::goalPoseCB, this);
     
     desiredStatePub = nh.advertise<trajectory_msgs::MultiDOFJointTrajectoryPoint>("/desired_state", 1);
-    desiredStateTimer = nh.createTimer(ros::Rate(5), &WaypointFollower::publishDesiredState, this);
+    desiredStateTimer = nh.createTimer(ros::Rate(5), &TrajGenerator::publishDesiredState, this);
     desiredStateTimer.start();
   }
 
@@ -29,12 +32,13 @@ class TrajGenerator {
   ros::Subscriber currentPoseSub;
   ros::Subscriber goalPoseSub;
   ros::Publisher desiredStatePub;
+  ros::Timer desiredStateTimer; 
 
   Eigen::Affine3d current_pose_;
   Eigen::Vector3d current_velocity_;
   Eigen::Vector3d current_angular_velocity_;
   
-  Eigen::Vector3d goal_pose_;
+  Eigen::Affine3d goal_pose_;
 
   const float max_v = 1.0;
   const float max_a = 2.0;
@@ -45,7 +49,7 @@ class TrajGenerator {
 
   const int derivative_to_optimize = mav_trajectory_generation::derivative_order::SNAP;
 
-  mav_trajectory_generation::Trajectory trajectory
+  mav_trajectory_generation::Trajectory trajectory;
   mav_trajectory_generation::Trajectory yaw_trajectory;
   ros::Time trajectoryStartTime;
 
@@ -72,10 +76,11 @@ class TrajGenerator {
     yaw_trajectory.clear();
     
     Eigen::Vector3d start_pos, start_vel;
+    float start_yaw
     start_pos << current_pose_.translation();
     start_vel << current_velocity_;
 
-    start_yaw << mav_msgs::yawFromQuaternion((Eigen::Quaterniond)current_pose_.rotation());
+    // start_yaw << mav_msgs::yawFromQuaternion((Eigen::Quaterniond)current_pose_.rotation());
 
     Eigen::Vector3d goal_pos, goal_vel;
     goal_pos << goal_pose_.translation();
@@ -176,7 +181,7 @@ class TrajGenerator {
     desiredStatePub.publish(setpoint);
   }
 
-}
+};
 
 
 int main(int argc, char** argv) {
