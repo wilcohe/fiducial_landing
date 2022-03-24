@@ -33,7 +33,7 @@ class PositionEstimator{
       if (i < 2)
         glob_pts(i, 0) = 0.5;
       else
-         glob_pts(i, ) = 0.5;
+         glob_pts(i, 1) = 0.5;
       glob_pts(i, 2) = 0.1; 
       glob_pts(i, 3) = 1.0; 
     }
