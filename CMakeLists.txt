@@ -176,7 +176,7 @@ target_link_libraries(
 
 target_link_libraries(
   trajectory_generation_node
-  $(catkin_LIBRARIES)
+  ${catkin_LIBRARIES}
 )
 
 install(
