@@ -57,9 +57,10 @@ class PositionEstimator{
 
    Eigen::Matrix4f camera; 
 
-   if (num < 4)
+   if (num < 4){
     ROS_INFO("Not enough detections.");
     return ;
+  }
 
    geometry_msgs::Pose centroid; 
 
