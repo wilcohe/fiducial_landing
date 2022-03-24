@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   geometry_msgs
   mav_msgs
+  nav_msgs
   roscpp
   apriltag_ros
   mav_trajectory_generation
