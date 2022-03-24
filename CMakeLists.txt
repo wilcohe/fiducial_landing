@@ -126,6 +126,9 @@ include_directories(
 add_executable(
   pose_estimator_node
   src/pose_estimator_node.cpp)
+add_executable(
+  trajectory_generation_node
+  src/trajectory_generation_node.cpp)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}

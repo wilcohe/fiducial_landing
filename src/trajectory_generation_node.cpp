@@ -1,5 +1,6 @@
 #include  "ros/ros.h"
 #include <geometry_msgs/Pose.h>
+#include <nav_msgs/Odometry.h>
 #include <eigen3/Eigen/Dense>
 #include <vector>
 #include <cmath>
