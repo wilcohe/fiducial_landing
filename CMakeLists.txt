@@ -170,13 +170,21 @@ add_executable(
 
 target_link_libraries(
   pose_estimator_node
-  trajectory_generation_node
   ${catkin_LIBRARIES}
+)
+
+target_link_libraries(
+  trajectory_generation_node
+  $(catkin_LIBRARIES)
 )
 
 install(
   TARGETS
   pose_estimator_node
+)
+
+install(
+  TARGETS
   trajectory_generation_node
 )
 
