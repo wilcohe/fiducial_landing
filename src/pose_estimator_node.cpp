@@ -91,7 +91,14 @@ class PositionEstimator{
    centroid.position.y = sol(3, 1); 
    centroid.position.z = sol(3, 2); 
 
-   pos_pub.publish(centroid); 
+   ROS_INFO("Generated solution");
+   ROS_INFO("X: %f", sol(3, 0)); 
+   ROS_INFO("Y: %f", sol(3, 1)); 
+   ROS_INFO("Z: %f", sol(3, 2)); 
+
+   pos_pub.publish(centroid);
+
+   ROS_INFO("Published");  
 
   }
 
