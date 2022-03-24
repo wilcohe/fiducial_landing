@@ -29,11 +29,11 @@ class PositionEstimator{
     detect_sub = nh.subscribe("/tag_detections", 10, &PositionEstimator::positionCallback, this);
     ROS_INFO("Detection subscriber initialized"); 
     for (int i = 0; i < 4; i++){
-      glob_pts(i, 0) = pow(-1.0, i)*0.5;
+      glob_pts(i, 1) = pow(-1.0, i)*0.5;
       if (i < 2)
-        glob_pts(i, 1) = 0.5;
+        glob_pts(i, 0) = 0.5;
       else
-         glob_pts(i, 1) = 0.5;
+         glob_pts(i, ) = 0.5;
       glob_pts(i, 2) = 0.1; 
       glob_pts(i, 3) = 1.0; 
     }
@@ -58,7 +58,7 @@ class PositionEstimator{
    Eigen::Matrix4f camera; 
 
    if (num < 4)
-    ROS_INFO("Not enough detections.")
+    ROS_INFO("Not enough detections.");
     return ;
 
    geometry_msgs::Point centroid; 
@@ -83,7 +83,7 @@ class PositionEstimator{
 
    }
 
-   ROS_INFO("Initialized Camera Matrix. Solving...")
+   ROS_INFO("Initialized Camera Matrix. Solving...");
 
    Eigen::Matrix4f sol = camera.ldlt().solve(glob_pts); 
 
