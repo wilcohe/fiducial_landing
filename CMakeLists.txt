@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   mav_msgs
   roscpp
   apriltag_ros
+  mav_trajectory_generation
 )
 
 find_package(Eigen3 REQUIRED)

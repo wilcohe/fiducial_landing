@@ -51,14 +51,15 @@ class PositionEstimator{
 
   void positionCallback(const apriltag_ros::AprilTagDetectionArray det){
 
-    // ROS_INFO("Position Called");
+    ROS_INFO("Position Called");
 
    int num = det.detections.size();
 
    Eigen::Matrix4f camera; 
 
-   // if (num < 3)
-   //  return ;
+   if (num < 4)
+    ROS_INFO("Not enough detections.")
+    return ;
 
    geometry_msgs::Point centroid; 
 
@@ -82,6 +83,7 @@ class PositionEstimator{
 
    }
 
+   ROS_INFO("Initialized Camera Matrix. Solving...")
 
    Eigen::Matrix4f sol = camera.ldlt().solve(glob_pts); 
 
