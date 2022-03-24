@@ -67,9 +67,9 @@ class PositionEstimator{
    // for (auto it det.begin(); it < det.end(); ++it){
    for (int i = 0; i < 4; i++){
 
-    centroid.x += det.detections[i].pose.pose.pose.position.x/i;
-    centroid.y += det.detections[i].pose.pose.pose.position.y/i; 
-    centroid.z += det.detections[i].pose.pose.pose.position.z/i; 
+    // centroid.x += det.detections[i].pose.pose.pose.position.x/i;
+    // centroid.y += det.detections[i].pose.pose.pose.position.y/i; 
+    // centroid.z += det.detections[i].pose.pose.pose.position.z/i; 
 
     // camera(0, i) = det.detections[i].pose.pose.pose.position.x;
     // camera(1, i) = det.detections[i].pose.pose.pose.position.y;
