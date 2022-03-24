@@ -106,6 +106,8 @@ class TrajGenerator {
     end_yaw.addConstraint(mav_trajectory_generation::derivative_order::ORIENTATION, mav_msgs::yawFromQuaternion((Eigen::Quaterniond)goal_pose_.rotation()));
     yaw_vertices.push_back(end_yaw);
 
+    srd::vector<double> segment_times; 
+
     segment_times = estimateSegmentTimes(vertices, max_v, max_a);
 
     // initialize optimizer
@@ -118,8 +120,8 @@ class TrajGenerator {
 
 
     // add max constraints
-    opt.addMaximumMagnitudeConstraint(mav_trajectory_generation::derivative_order::VELOCITY, v_max);
-    opt.addMaximumMagnitudeConstraint(mav_trajectory_generation::derivative_order::ACCELERATION, a_max);
+    // opt.addMaximumMagnitudeConstraint(mav_trajectory_generation::derivative_order::VELOCITY, max_v);
+    // opt.addMaximumMagnitudeConstraint(mav_trajectory_generation::derivative_order::ACCELERATION, max_a);
 
     // solve for trajectory
     opt.solveLinear();
