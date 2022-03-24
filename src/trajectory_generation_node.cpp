@@ -76,7 +76,6 @@ class TrajGenerator {
     yaw_trajectory.clear();
     
     Eigen::Vector3d start_pos, start_vel;
-    float start_yaw
     start_pos << current_pose_.translation();
     start_vel << current_velocity_;
 
@@ -106,7 +105,7 @@ class TrajGenerator {
     end_yaw.addConstraint(mav_trajectory_generation::derivative_order::ORIENTATION, mav_msgs::yawFromQuaternion((Eigen::Quaterniond)goal_pose_.rotation()));
     yaw_vertices.push_back(end_yaw);
 
-    srd::vector<double> segment_times; 
+    std::vector<double> segment_times; 
 
     segment_times = estimateSegmentTimes(vertices, max_v, max_a);
 
