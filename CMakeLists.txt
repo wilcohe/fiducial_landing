@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(april_land)
+project(fiducial_landing)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -9,6 +9,7 @@ project(april_land)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
+  mav_msgs
   roscpp
   apriltag_ros
 )
@@ -169,12 +170,14 @@ add_executable(
 
 target_link_libraries(
   pose_estimator_node
+  trajectory_generation_node
   ${catkin_LIBRARIES}
 )
 
 install(
   TARGETS
   pose_estimator_node
+  trajectory_generation_node
 )
 
 install(
