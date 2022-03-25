@@ -10,17 +10,6 @@
 
 class PositionEstimator{
  public:
- // Eigen::Matrix4d glob_pts = {{-0.5, -0.5, 0.5, 0.5}, 
- //               {-0.5, 0.5, -0.5, 0.5}, 
- //               { 0.1, 0.1, 0.1, 0.1}, 
- //               { 1.0, 1.0, 1.0, 1.0}}; 
-
- // Eigen::Matrix4d glob_pts {{-0.5, -0.5, 0.1, 1.0}, 
- //              {-0.5, 0.5, 0.1, 1.0}, 
- //              { 0.5, -0.5, 0.1, 1.0}, 
- //              { 0.5, 0.5, 1.0, 1.0},}; 
-
-    
 
   PositionEstimator(ros::NodeHandle nh){
     ROS_INFO("Starting Pose Estimator");
@@ -29,22 +18,23 @@ class PositionEstimator{
     detect_sub = nh.subscribe("/tag_detections", 10, &PositionEstimator::positionCallback, this);
     ROS_INFO("Detection subscriber initialized"); 
     for (int i = 0; i < 4; i++){
-      glob_pts(i, 1) = pow(-1.0, i)*0.5;
       if (i < 2)
         glob_pts(i, 0) = 0.5;
       else
-         glob_pts(i, 1) = 0.5;
+         glob_pts(i, 0) = -0.5;
+      if (i < 1 || i > 2)
+        glob_pts(i, 1) = 0.5; 
+      else
+        glob_pts(i, 1) = -0.5
+
       glob_pts(i, 2) = 0.1; 
       glob_pts(i, 3) = 1.0; 
     }
 
-    // glob_pts << -0.5, -0.5, 0.1, 1.0, -0.5, 0.5, 0.1, 1.0, 0.5, -0.5, 0.1, 1.0, 0.5, 0.5, 0.1, 1.0; 
     ROS_INFO("Finished Pose Estimator");
   }
 
  private: 
-
-  // Eigen::MatrixXf glob_pts;
   Eigen::Matrix4f glob_pts;  
   ros::Publisher pos_pub; 
   ros::Subscriber detect_sub; 
@@ -64,23 +54,18 @@ class PositionEstimator{
 
    geometry_msgs::Pose centroid; 
 
-   // for (auto& det.detections : *it){
-   // for (auto it det.begin(); it < det.end(); ++it){
-   for (int i = 0; i < 4; i++){
 
-    // centroid.x += det.detections[i].pose.pose.pose.position.x/i;
-    // centroid.y += det.detections[i].pose.pose.pose.position.y/i; 
-    // centroid.z += det.detections[i].pose.pose.pose.position.z/i; 
+   for (int i = 0; i < num; i++){
 
-    // camera(0, i) = det.detections[i].pose.pose.pose.position.x;
-    // camera(1, i) = det.detections[i].pose.pose.pose.position.y;
-    // camera(2, i) = det.detections[i].pose.pose.pose.position.z;
-    // camera(3, i) = 1;
+    if (det.detections[i].id.size() > 0)
+      continue; 
 
-    camera(i, 0) = det.detections[i].pose.pose.pose.position.x; 
-    camera(i, 1) = det.detections[i].pose.pose.pose.position.y; 
-    camera(i, 2) = det.detections[i].pose.pose.pose.position.z; 
-    camera(i, 3) = 1.0; 
+    int id = det.detections[i].id[0] - 1 ; 
+
+    camera(id, 0) = det.detections[i].pose.pose.pose.position.x; 
+    camera(id, 1) = det.detections[i].pose.pose.pose.position.y; 
+    camera(id, 2) = det.detections[i].pose.pose.pose.position.z; 
+    camera(id, 3) = 1.0; 
 
    }
 
