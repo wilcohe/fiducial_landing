@@ -28,6 +28,7 @@ class Test {
     curr_quat.setRPY(0, 0, 0);
     curr.pose.pose.orientation = tf2::toMsg(curr_quat);
     currentStatePub.publish(curr);
+    ROS_INFO("published current");
   }
 
   void publishGoal() {
@@ -38,7 +39,8 @@ class Test {
     tf2::Quaternion goal_quat;
     goal_quat.setRPY(0, 0, M_PI/2);
     goal.pose.pose.orientation = tf2::toMsg(goal_quat);
-    currentStatePub.publish(goal);
+    goalStatePub.publish(goal);
+    ROS_INFO("published goal");
   }
 };
 
