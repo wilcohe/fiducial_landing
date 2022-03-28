@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <nav_msgs/Odometry.h>
 #include <trajectory_msgs/MultiDOFJointTrajectoryPoint.h>
-#include <Vector>
+#include <vector>
 
 ros::NodeHandle nh;
 nav_msgs::Odometry odom_msg
