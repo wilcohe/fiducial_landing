@@ -9,8 +9,8 @@
 class Test {
   public: 
   Test(ros::NodeHandle nh) {
-    currentStatePub = nh.advertise<nav_msgs::Odometry>("/current_state", 1);
-    goalPosePub = nh.advertise<nav_msgs::Odometry>("/goal", 1);
+    currentStatePub = nh.advertise<nav_msgs::Odometry>("/current_state", 1, true);
+    goalPosePub = nh.advertise<nav_msgs::Odometry>("/goal", 1, true);
     publishCurrent();
     publishGoal();
   }
