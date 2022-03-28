@@ -3,16 +3,18 @@
 #include <nav_msgs/Odometry.h>
 #include <trajectory_msgs/MultiDOFJointTrajectoryPoint.h>
 #include <tf/transform_datatypes.h>
+#include <Vector>
 
 ros::NodeHandle nh;
-ros::Publisher statePub("/current_state", nav_msgs::Odometry odom_msg);
+nav_msgs::Odometry odom_msg
+ros::Publisher statePub("/current_state", &odom_msg);
 
 char *IP = "192.168.6.1";
 
 void messageCb(trajectory_msgs::MultiDOFJointTrajectoryPoint message){
     printf("Received Subscribed Message");
 }
-ros::Subscriber<nav_msgs::Odometry> sub("/desired_state", messageCb);
+ros::Subscriber<trajectory_msgs::MultiDOFJointTrajectoryPoint> sub("/desired_state", messageCb);
 
 
 int main()
@@ -24,7 +26,6 @@ int main()
         std::vector<double> pos = get_pos_c(); 
         
         // <x, y, z, vx, vy, vz, qw, qx, qy, qz, vr, vp, vy>
-        nav_msgs::Odometry odom_msg;
         odom_msg.pose.pose.position.x = pos[0]; 
         odom_msg.pose.pose.position.y = pos[1]; 
         odom_msg.pose.pose.position.z = pos[2];
@@ -41,14 +42,14 @@ int main()
 
        
         //state.data = //something receive from the rc_pilot
-        statePub.publish(state);
-        ros::spin()
+        statePub.publish(odom_msg);
+        nh.spinOnce();  
     }
 }   
 
 
 
-d//ouble quatx, quaty, quatz, quatw
+//ouble quatx, quaty, quatz, quatw
 //quatx = odom_msg.pose.pose.orientation.x;
 //quaty = odom_msg.pose.pose.orientation.y;
 //quatz = odom_msg.pose.pose.orientation.z;
