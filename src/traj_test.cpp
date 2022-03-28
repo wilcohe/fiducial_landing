@@ -39,7 +39,7 @@ class Test {
     tf2::Quaternion goal_quat;
     goal_quat.setRPY(0, 0, M_PI/2);
     goal.pose.pose.orientation = tf2::toMsg(goal_quat);
-    goalStatePub.publish(goal);
+    goalPosePub.publish(goal);
     ROS_INFO("published goal");
   }
 };
