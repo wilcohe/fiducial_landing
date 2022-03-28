@@ -22,7 +22,7 @@ class Test {
     curr.pose.pose.position.z = 0.0; 
     tf2::Quaternion curr_quat;
     curr_quat.setRPY(0, 0, 0);
-    curr.pose.pose.orientation = tf2::toMsg(curr_quat)
+    curr.pose.pose.orientation = tf2::toMsg(curr_quat);
     currentStatePub.publish(curr);
   }
 
@@ -33,7 +33,7 @@ class Test {
     goal.pose.pose.position.z = 2.0; 
     tf2::Quaternion goal_quat;
     goal_quat.setRPY(0, 0, M_PI/2);
-    goal.pose.pose.orientation = tf2::toMsg(goal_quat)
+    goal.pose.pose.orientation = tf2::toMsg(goal_quat);
     currentStatePub.publish(goal);
   }
 };
