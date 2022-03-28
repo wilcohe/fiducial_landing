@@ -11,6 +11,9 @@
 class PositionEstimator{
  public:
 
+  Eigen::Vector3f position; 
+  Eigen::Quaternion orientation; 
+
   PositionEstimator(ros::NodeHandle nh){
     ROS_INFO("Starting Pose Estimator");
     pos_pub = nh.advertise<geometry_msgs::Pose>("position", 100, true);
@@ -32,59 +35,105 @@ class PositionEstimator{
     }
 
     ROS_INFO("Finished Pose Estimator");
+
+    avgPoses(curr_detect, &position, &orientation); 
+
+    pubPoses(position, orientation); 
+
+
   }
 
  private: 
   Eigen::Matrix4f glob_pts;  
   ros::Publisher pos_pub; 
   ros::Subscriber detect_sub; 
+  apriltag_ros::AprilTagDetectionArray curr_detect; 
+
+  int singleTagDetect(const apriltag_ros::AprilTagDetection det, Eigen::Vector3f& curr_p, Eigen::Quaternion& curr_o){
+
+    if (det.id.size()  > 1)
+          return 1; 
+    
+    int id = det.id[0];
+
+    Eigen::Quaternion rpy; 
+
+    rpy.w() = det.pose.orientation.w; 
+    rpy.x() = det.pose.orientation.x; 
+    rpy.y() = det.pose.orientation.y;
+    rpy.z() = det.pose.orientation.z;
+
+    Eigen::vector3f glob = glob_pts.row(i-1).seq(0,3).transpose();
+    Eigen::Vector3f pose_c(det.pose.position.x, det.pose.position.y, det.pose.position.z);
+
+    curr_p = glob + pose_c;
+    curr_o = rpy;
+
+    return 0;
+
+  }
+
+  void avgPoses(apriltag_ros::AprilTagDetectionArray det,
+                Eigen::Vector3f& curr_p, Eigen::Quaternion& curr_o){
+
+    int num_detect = AprilTagDetectionArray.detections.size();
+    int num = 0;
+
+    for (int i = 0; i < num_detect; i++){
+
+      Eigen::Vector3f curr_p; 
+      Eigen::Quaternion curr_o; 
+
+      if (!SingleTagDetect(det[i], &curr_p, &curr_o)){
+
+        curr_p(0) += curr_ps[i](0);
+        curr_p(1) += curr_ps[i](1);
+        curr_p(2) += curr_ps[i](2);
+
+        curr_o.w() += curr_os[i].w;
+        curr_o.x() += curr_os[i].x;
+        curr_o.y() += curr_os[i].y;
+        curr_o.z() += curr_os[i].z;
+
+        num++;
+      }
+
+    }
+
+    curr_p(0) += curr_p(0)/num;
+    curr_p(1) += curr_p(1)/num;
+    curr_p(2) += curr_p(2)/num;
+
+    curr_o.w() += curr_o.w/num;
+    curr_o.x() += curr_o.x/num;
+    curr_o.y() += curr_o.y/num;
+    curr_o.z() += curr_o.z/num;
+
+  }
+
+
+  void pubPoses(Eigen::Vector3f curr_p, Eigen::Quaternion curr_o){
+
+    geometry_msgs::Pose pose; 
+
+    pose.position.x = curr_p(0);
+    pose.position.y = curr_p(1); 
+    pose.position.z = curr_p(2);
+
+    pose.orientation.w = curr_o.w; 
+    pose.orientation.x = curr_o.x;
+    pose.orientation.y = curr_o.y; 
+    pose.orientation.z = curr_o.z; 
+
+    pose_pub.publish(pose); 
+
+  }
 
   void positionCallback(const apriltag_ros::AprilTagDetectionArray det){
 
     ROS_INFO("Position Called");
 
-   int num = det.detections.size();
-
-   Eigen::Matrix4f camera; 
-
-   if (num < 4){
-    ROS_INFO("Not enough detections.");
-    return ;
-  }
-
-   geometry_msgs::Pose centroid; 
-
-
-   for (int i = 0; i < num; i++){
-
-    if (det.detections[i].id.size() > 0)
-      continue; 
-
-    int id = det.detections[i].id[0] - 1 ; 
-
-    camera(id, 0) = det.detections[i].pose.pose.pose.position.x; 
-    camera(id, 1) = det.detections[i].pose.pose.pose.position.y; 
-    camera(id, 2) = det.detections[i].pose.pose.pose.position.z; 
-    camera(id, 3) = 1.0; 
-
-   }
-
-   ROS_INFO("Initialized Camera Matrix. Solving...");
-
-   Eigen::Matrix4f sol = camera.ldlt().solve(glob_pts); 
-
-   centroid.position.x = sol(3, 0); 
-   centroid.position.y = sol(3, 1); 
-   centroid.position.z = sol(3, 2); 
-
-   ROS_INFO("Generated solution");
-   ROS_INFO("X: %f", sol(3, 0)); 
-   ROS_INFO("Y: %f", sol(3, 1)); 
-   ROS_INFO("Z: %f", sol(3, 2)); 
-
-   pos_pub.publish(centroid);
-
-   ROS_INFO("Published");  
+    curr_detect = det;  
 
   }
 
