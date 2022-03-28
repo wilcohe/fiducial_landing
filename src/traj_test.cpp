@@ -2,6 +2,8 @@
 #include <geometry_msgs/Pose.h>
 #include <nav_msgs/Odometry.h>
 #include <eigen3/Eigen/Dense>
+#include <tf/transform_datatypes.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 
 class Test {
@@ -36,7 +38,7 @@ class Test {
   }
 };
 
-int main() {
+int main(int argc, char** argv) {
   ros::init(argc, argv, "trajectory_test_node");
   ros::NodeHandle nh;
 
