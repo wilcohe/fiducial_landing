@@ -138,6 +138,9 @@ add_executable(
 add_executable(
   trajectory_generation_node
   src/trajectory_generation_node.cpp)
+add_executable(
+  trajectory_test_node
+  src/traj_test.cpp)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
@@ -186,6 +189,11 @@ target_link_libraries(
   ${catkin_LIBRARIES}
 )
 
+target_link_libraries(
+  trajectory_test_node
+  ${catkin_LIBRARIES}
+)
+
 install(
   TARGETS
   pose_estimator_node
@@ -194,6 +202,11 @@ install(
 install(
   TARGETS
   trajectory_generation_node
+)
+
+install(
+  TARGETS
+  trajectory_test_node
 )
 
 install(
