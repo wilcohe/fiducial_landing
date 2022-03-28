@@ -16,18 +16,18 @@
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 class TrajGenerator {
-  
+
   public:
   TrajGenerator(ros::NodeHandle nh) {
     currentPoseSub = nh.subscribe("/current_state", 10, &TrajGenerator::currentStateCB, this);
     goalPoseSub = nh.subscribe("/goal", 10, &TrajGenerator::goalPoseCB, this);
-    
+
     desiredStatePub = nh.advertise<trajectory_msgs::MultiDOFJointTrajectoryPoint>("/desired_state", 1);
     desiredStateTimer = nh.createTimer(ros::Rate(5), &TrajGenerator::publishDesiredState, this);
     desiredStateTimer.start();
   }
 
-  
+
   private:
   ros::Subscriber currentPoseSub;
   ros::Subscriber goalPoseSub;
@@ -37,7 +37,7 @@ class TrajGenerator {
   Eigen::Affine3d current_pose_;
   Eigen::Vector3d current_velocity_;
   Eigen::Vector3d current_angular_velocity_;
-  
+
   Eigen::Affine3d goal_pose_;
 
   const float max_v = 1.0;
@@ -101,7 +101,7 @@ class TrajGenerator {
     end.makeStartOrEnd(goal_pos, derivative_to_optimize);
     end.addConstraint(mav_trajectory_generation::derivative_order::VELOCITY, goal_vel);
     vertices.push_back(end);
-    
+
     end_yaw.addConstraint(mav_trajectory_generation::derivative_order::ORIENTATION, mav_msgs::yawFromQuaternion((Eigen::Quaterniond)goal_pose_.rotation()));
     yaw_vertices.push_back(end_yaw);
 
