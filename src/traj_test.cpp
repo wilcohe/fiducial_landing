@@ -15,6 +15,10 @@ class Test {
     publishGoal();
   }
 
+  private:
+  ros::Publisher currentStatePub;
+  ros::Publisher goalPosePub;
+
   void publishCurrent() {
     nav_msgs::Odometry curr;
     curr.pose.pose.position.x = 0.0; 
