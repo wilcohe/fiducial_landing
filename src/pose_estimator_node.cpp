@@ -11,6 +11,9 @@
 class PositionEstimator{
  public:
 
+  Eigen::Vector3f position; 
+  Eigen::Quaternion orientation; 
+
   PositionEstimator(ros::NodeHandle nh){
     ROS_INFO("Starting Pose Estimator");
     pos_pub = nh.advertise<geometry_msgs::Pose>("position", 100, true);
@@ -32,6 +35,12 @@ class PositionEstimator{
     }
 
     ROS_INFO("Finished Pose Estimator");
+
+    avgPoses(curr_detect, &position, &orientation); 
+
+    pubPoses(position, orientation); 
+
+
   }
 
  private: 
@@ -40,43 +49,12 @@ class PositionEstimator{
   ros::Subscriber detect_sub; 
   apriltag_ros::AprilTagDetectionArray curr_detect; 
 
-  void singleTagDetect(const apriltag_ros::AprilTagDetection det, Eigen::Vector3f& curr_p, Eigen::Quaternion& curr_o){
+  int singleTagDetect(const apriltag_ros::AprilTagDetection det, Eigen::Vector3f& curr_p, Eigen::Quaternion& curr_o){
 
     if (det.id.size()  > 1)
-          return; 
+          return 1; 
     
     int id = det.id[0];
-
-    // Eigen::MatrixXf glob = glob_pts.row(i-1).seq(0,3).transpose();
-
-    // Eigen::Quaternion rpy; 
-
-    // rpy.w() = det.pose.orientation.w; 
-    // rpy.x() = det.pose.orientation.x; 
-    // rpy.y() = det.pose.orientation.y;
-    // rpy.z() = det.pose.orientation.z; 
-
-    // Eigen::Matrix3d Rt = rpy.normalized().toRotationMatrix().transpose();
-
-    // Eigen::Matrix4d TCA = Eigen::Matrix4d::Zero(); 
-
-    // TCA.block<3, 3>(0, 0) = Rt;
-
-    // // TCA.block<3,1>(0,3) = -Rt*glob;
-
-    // Eigen::Vector3f pose_c(det.pose.position.x, det.pose.position.y, det.pose.position.z);
-
-    // TCA.block<3,1>(0,3) = -Rt*pose_c;
-
-    // TCA(3,3) = 1;
-
-    // Eigen::Matrix4f TAO = Eigen::Matrix4f::Identity(); 
-
-    // TAO.block<3,1>(0,3) = glob;
-
-    // Eigen::Matrix4f TCO = TAO*TCA;
-
-    // Quaternion
 
     Eigen::Quaternion rpy; 
 
@@ -91,31 +69,45 @@ class PositionEstimator{
     curr_p = glob + pose_c;
     curr_o = rpy;
 
+    return 0;
+
   }
 
-  void avgPoses(std::vector<Eigen::Vector3d> curr_ps, std::vector<Eigen::Quaternion> curr_os,
+  void avgPoses(apriltag_ros::AprilTagDetectionArray det,
                 Eigen::Vector3f& curr_p, Eigen::Quaternion& curr_o){
 
-    int num_p = curr_ps.size();
-    int nump_o = curr_os.size(); 
+    int num_detect = AprilTagDetectionArray.detections.size();
+    int num = 0;
 
-    if (num_p != num_o){
-      ROS_WARN("Number of positions is not equal to number of orientations.");
-      throw std::runtime_error("Array sizes not equal");
+    for (int i = 0; i < num_detect; i++){
+
+      Eigen::Vector3f curr_p; 
+      Eigen::Quaternion curr_o; 
+
+      if (!SingleTagDetect(det[i], &curr_p, &curr_o)){
+
+        curr_p(0) += curr_ps[i](0);
+        curr_p(1) += curr_ps[i](1);
+        curr_p(2) += curr_ps[i](2);
+
+        curr_o.w() += curr_os[i].w;
+        curr_o.x() += curr_os[i].x;
+        curr_o.y() += curr_os[i].y;
+        curr_o.z() += curr_os[i].z;
+
+        num++;
+      }
+
     }
 
-    for (int i = 0; i < curr_ps.size(); i++){
+    curr_p(0) += curr_p(0)/num;
+    curr_p(1) += curr_p(1)/num;
+    curr_p(2) += curr_p(2)/num;
 
-      curr_p(0) += curr_ps[i](0)/num_p;
-      curr_p(1) += curr_ps[i](1)/num_p;
-      curr_p(2) += curr_ps[i](2)/num_p;
-
-      curr_o.w() += curr_os[i].w/num_o;
-      curr_o.x() += curr_os[i].x/num_o;
-      curr_o.y() += curr_os[i].y/num_o;
-      curr_o.z() += curr_os[i].z/num_o;
-
-    }
+    curr_o.w() += curr_o.w/num;
+    curr_o.x() += curr_o.x/num;
+    curr_o.y() += curr_o.y/num;
+    curr_o.z() += curr_o.z/num;
 
   }
 
@@ -155,12 +147,6 @@ int main(int argc, char** argv)
   ros::NodeHandle nh("~");
 
   PositionEstimator pose_estimator(nh);  
-
-  while(ros::ok()){
-
-
-
-  }
 
 
  // ROS_INFO_THROTTLE(1.0, "Pose estimator initialized. "); 
