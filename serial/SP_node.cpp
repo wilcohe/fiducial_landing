@@ -8,6 +8,8 @@ ros::NodeHandle nh;
 nav_msgs::Odometry odom_msg;
 ros::Publisher statePub("/current_state", &odom_msg);
 
+traj_type* next_traj; 
+
 void messageCb(const trajectory_msgs::MultiDOFJointTrajectoryPoint &message){
     printf("Received Subscribed Message");
 }
@@ -15,13 +17,32 @@ ros::Subscriber<trajectory_msgs::MultiDOFJointTrajectoryPoint> sub("/desired_sta
 
 char *IP = "192.168.6.1";
 
-std::array<double> get_pos_c(){
+double[] get_pos_c(){
 
-    double arr[12]; 
+    double arr[13]; 
 
     return arr; 
 
 }
+
+double[] send_traj(void){
+
+    double traj[13];
+    double[] next = *next_traj; 
+
+    for (int i = 0; i < 3; i++){
+        traj[i] = *next.pos[i]; 
+        traj[i + 3] = *next.vel[i]; 
+        traj[i + 10] = *next.rate[i]; 
+    }
+
+    for (int i = 0; i < 4; i++)
+        traj[i + 6] = *next.quat[i]; 
+
+    return traj; 
+}
+
+
 
 int main()
 {
