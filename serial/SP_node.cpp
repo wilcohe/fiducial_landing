@@ -16,19 +16,19 @@ traj_type* next_traj = new traj_type;
 void messageCb(const trajectory_msgs::MultiDOFJointTrajectoryPoint &msg){
     printf("Received Subscribed Message");
 
-    next_traj->pos[0] = msg.transforms[0].translation[0]; 
-    next_traj->pos[1] = msg.transforms[0].translation[1]; 
-    next_traj->pos[2] = msg.transforms[0].translation[2]; 
+    next_traj->pos[0] = msg.transforms[0].translation.x; 
+    next_traj->pos[1] = msg.transforms[0].translation.y; 
+    next_traj->pos[2] = msg.transforms[0].translation.z; 
 
     next_traj->vel[0] = 0.0; 
     next_traj->vel[1] = 0.0; 
     next_traj->vel[2] = 0.0;
 
     // x y z w order
-    next_traj->quat[0] = msg.transforms[0].rotation[0]; 
-    next_traj->quat[1] = msg.transforms[0].rotation[1]; 
-    next_traj->quat[2] = msg.transforms[0].rotation[2];  
-    next_traj->quat[3] = msg.transforms[0].rotation[3];  
+    next_traj->quat[0] = msg.transforms[0].rotation.x; 
+    next_traj->quat[1] = msg.transforms[0].rotation.y; 
+    next_traj->quat[2] = msg.transforms[0].rotation.z;  
+    next_traj->quat[3] = msg.transforms[0].rotation.w;  
 
     next_traj->rates[0] = 0.0; 
     next_traj->rates[1] = 0.0; 
