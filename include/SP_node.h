@@ -11,7 +11,7 @@ typedef struct traj_type{
 	double* rates; 
 } traj_type; 
 
- EXTERNC double* send_traj(void);
+ EXTERNC traj_type send_traj(void);
 
 
  #undef EXTERNC
