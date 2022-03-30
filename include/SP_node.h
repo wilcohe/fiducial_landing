@@ -4,14 +4,14 @@
  #define EXTERNC
  #endif
 
-typedef traj_type struct {
-	double[] pos;  
-	double[] vel;  
-	double[] quat; 
-	double[] rates; 
+typedef struct traj_type{
+	double* pos;  
+	double* vel;  
+	double* quat; 
+	double* rates; 
 } traj_type; 
 
- EXTERNC double[] send_traj(void);
+ EXTERNC double* send_traj(void);
 
 
  #undef EXTERNC
