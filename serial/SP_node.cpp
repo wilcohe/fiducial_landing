@@ -9,7 +9,7 @@ ros::NodeHandle nh;
 nav_msgs::Odometry odom_msg;
 ros::Publisher statePub("/current_state", &odom_msg);
 
-traj_type* next_traj; 
+traj_type* next_traj = new traj_type; 
 
 void messageCb(const trajectory_msgs::MultiDOFJointTrajectoryPoint &message){
     printf("Received Subscribed Message");
