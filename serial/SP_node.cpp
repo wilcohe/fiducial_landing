@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <ros.h>
 #include <stdio.h>
 #include <nav_msgs/Odometry.h>
@@ -13,9 +15,6 @@ traj_type* next_traj = new traj_type;
 
 void messageCb(const trajectory_msgs::MultiDOFJointTrajectoryPoint &message){
     printf("Received Subscribed Message");
-
-
-
 }
 ros::Subscriber<trajectory_msgs::MultiDOFJointTrajectoryPoint> sub("/desired_state", messageCb);
 
