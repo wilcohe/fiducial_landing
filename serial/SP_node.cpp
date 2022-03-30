@@ -15,13 +15,21 @@ ros::Subscriber<trajectory_msgs::MultiDOFJointTrajectoryPoint> sub("/desired_sta
 
 char *IP = "192.168.6.1";
 
+std::array<double> get_pos_c(){
+
+    double arr[12]; 
+
+    return arr; 
+
+}
+
 int main()
 {
     nh.initNode(IP);
     nh.subscribe(sub);
     nh.advertise(statePub);
     while(1){
-        std::vector<double> pos = get_pos_c(); 
+        double[] pos = get_pos_c(); 
         
         // <x, y, z, vx, vy, vz, qw, qx, qy, qz, vr, vp, vy>
         odom_msg.pose.pose.position.x = pos[0]; 
