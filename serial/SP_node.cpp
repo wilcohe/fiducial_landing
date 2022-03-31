@@ -11,9 +11,11 @@ ros::NodeHandle nh;
 nav_msgs::Odometry odom_msg;
 ros::Publisher statePub("/current_state", &odom_msg);
 
-traj_type* next_traj = new traj_type; 
 
-void messageCb(const trajectory_msgs::MultiDOFJointTrajectoryPoint &msg){
+traj_type* next_traj = new traj_type; 
+pose* curr_pose = new pose; 
+
+void trajCallback(const trajectory_msgs::MultiDOFJointTrajectoryPoint &msg){
     printf("Received Subscribed Message");
 
     next_traj->pos[0] = msg.transforms[0].translation.x; 
@@ -35,33 +37,29 @@ void messageCb(const trajectory_msgs::MultiDOFJointTrajectoryPoint &msg){
     next_traj->rates[2] = 0.0;
 
 }
-ros::Subscriber<trajectory_msgs::MultiDOFJointTrajectoryPoint> sub("/desired_state", messageCb);
+
+void poseCallback(const geometry_msgs::Pose &msg){
+
+    curr_pose->pos[0] = msg.position.x; 
+    curr_pose->pos[1] = msg.position.y; 
+    curr_pose->pos[2] = msg.position.z; 
+
+    // x y z w order
+    curr_pose->quat[0] = msg.orientation.x; 
+    curr_pose->quat[1] = msg.orientation.y; 
+    curr_pose->quat[2] = msg.orientation.z;  
+    curr_pose->quat[3] = msg.orientation.w;  
+
+}
+
+ros::Subscriber<trajectory_msgs::MultiDOFJointTrajectoryPoint> sub("/desired_state", trajCallback);
+ros::Subscriber<geometry_msgs::Pose> pose_sub("/position_estimate", poseCallback); 
 
 char *IP = "192.168.6.1";
 
-// double* get_pos_c(){
-
-//     double* arr = new double[13]; 
-
-//     return arr; 
-
-// }
-
 traj_type send_traj(void){
 
-    // double* traj = new double[13];
-    traj_type next = *next_traj; 
-
-    // for (int i = 0; i < 3; i++){
-    //     traj[i] = next.pos[i]; 
-    //     traj[i + 3] = next.vel[i]; 
-    //     traj[i + 10] = next.rates[i]; 
-    // }
-
-    // for (int i = 0; i < 4; i++)
-    //     traj[i + 6] = next.quat[i]; 
-
-    return next; 
+    return *next_traj; 
 }
 
 
