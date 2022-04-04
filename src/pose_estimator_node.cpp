@@ -13,7 +13,7 @@ class PositionEstimator{
  public:
 
   Eigen::Vector3f position; 
-  Eigen::Quaternion orientation; 
+  Eigen::Quaterniond orientation; 
 
   PositionEstimator(ros::NodeHandle nh){
     ROS_INFO("Starting Pose Estimator");
