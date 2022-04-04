@@ -73,9 +73,6 @@ int main()
     nh.advertise(statePub);
     while(1){
         // double *pos = get_pos_c();   
-        
-
-       
         //state.data = //something receive from the rc_pilot
         statePub.publish(&odom_msg);
         nh.spinOnce();  
