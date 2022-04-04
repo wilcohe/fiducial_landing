@@ -141,7 +141,7 @@ class PositionEstimator{
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "pose_estimator");
+  ros::init(argc, argv, "pose_estimator_node");
   ROS_INFO("Initializing.");
 
   ros::NodeHandle nh("~");
