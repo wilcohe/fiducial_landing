@@ -74,20 +74,6 @@ int main()
     while(1){
         // double *pos = get_pos_c();   
         
-        // <x, y, z, vx, vy, vz, qw, qx, qy, qz, vr, vp, vy>
-        // odom_msg.pose.pose.position.x = pos[0]; 
-        // odom_msg.pose.pose.position.y = pos[1]; 
-        // odom_msg.pose.pose.position.z = pos[2];
-        // odom_msg.twist.twist.linear.x = pos[3];
-        // odom_msg.twist.twist.linear.y = pos[4];
-        // odom_msg.twist.twist.linear.z = pos[5];
-        // odom_msg.pose.pose.orientation.w = pos[6];
-        // odom_msg.pose.pose.orientation.x = pos[7];
-        // odom_msg.pose.pose.orientation.y = pos[8];
-        // odom_msg.pose.pose.orientation.z = pos[9];
-        // odom_msg.twist.twist.angular.x = pos[10];
-        // odom_msg.twist.twist.angular.y = pos[11];
-        // odom_msg.twist.twist.angular.z = pos[12];
 
        
         //state.data = //something receive from the rc_pilot
@@ -96,4 +82,18 @@ int main()
     }
 }   
 
+// <x, y, z, vx, vy, vz, qw, qx, qy, qz, vr, vp, vy>
+// odom_msg.pose.pose.position.x = pos[0]; 
+// odom_msg.pose.pose.position.y = pos[1]; 
+// odom_msg.pose.pose.position.z = pos[2];
+// odom_msg.twist.twist.linear.x = pos[3];
+// odom_msg.twist.twist.linear.y = pos[4];
+// odom_msg.twist.twist.linear.z = pos[5];
+// odom_msg.pose.pose.orientation.w = pos[6];
+// odom_msg.pose.pose.orientation.x = pos[7];
+// odom_msg.pose.pose.orientation.y = pos[8];
+// odom_msg.pose.pose.orientation.z = pos[9];
+// odom_msg.twist.twist.angular.x = pos[10];
+// odom_msg.twist.twist.angular.y = pos[11];
+// odom_msg.twist.twist.angular.z = pos[12];
 
