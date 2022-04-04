@@ -1,0 +1,13 @@
+<launch>
+
+	<include file="/opt/ros/noetic/share/realsense2_camera/launch/rs_camera.launch"/>
+
+	<include file="/home/ubuntu/workspace/src/apriltag_ros/apriltag_ros/launch/continuous_detection.launch"/>
+
+	<node pkg="april_land" type="pose_estimator" name="pose_estimator"/>
+
+	<node pkg="april_land" type="trajectory_generation_node" name="trajectory_generation_node" />
+
+	<node pkg="rosserial_python" type="serial_node.py" name="serial_node"/>
+	
+</launch> 
