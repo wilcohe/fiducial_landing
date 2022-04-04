@@ -12,8 +12,8 @@
 class PositionEstimator{
  public:
 
-  Eigen::Vector3f position(0, 0, 0); 
-  Eigen::Quaternion orientation(0, 0, 0, 1); 
+  Eigen::Vector3f position; 
+  Eigen::Quaternion orientation; 
 
   PositionEstimator(ros::NodeHandle nh){
     ROS_INFO("Starting Pose Estimator");
@@ -50,7 +50,7 @@ class PositionEstimator{
   ros::Subscriber detect_sub; 
   apriltag_ros::AprilTagDetectionArray curr_detect; 
 
-  int singleTagDetect(const apriltag_ros::AprilTagDetection det, Eigen::Vector3f& curr_p, Eigen::Quaternion& curr_o){
+  int singleTagDetect(const apriltag_ros::AprilTagDetection det, Eigen::Vector3f curr_p, Eigen::Quaternion curr_o){
 
     if (det.id.size()  > 1)
           return 1; 
@@ -75,7 +75,7 @@ class PositionEstimator{
   }
 
   void avgPoses(apriltag_ros::AprilTagDetectionArray det,
-                Eigen::Vector3f& curr_p, Eigen::Quaternion& curr_o){
+                Eigen::Vector3f curr_p, Eigen::Quaternion curr_o){
 
     int num_detect = AprilTagDetectionArray.detections.size();
     int num = 0;
