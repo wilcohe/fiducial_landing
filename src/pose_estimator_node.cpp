@@ -115,18 +115,18 @@ class PositionEstimator{
 
   void pubPoses(Eigen::Vector3f curr_p, Eigen::Quaternion curr_o){
 
-    nav_msgs::Odometry pose; 
+    nav_msgs::Odometry odom; 
 
-    pose.pose.position.x = curr_p(0);
-    pose.pose.position.y = curr_p(1); 
-    pose.pose.position.z = curr_p(2);
+    odom.pose.pose.position.x = curr_p(0);
+    odom.pose.pose.position.y = curr_p(1); 
+    odom.pose.pose.position.z = curr_p(2);
 
-    pose.pose.orientation.w = curr_o.w; 
-    pose.pose.orientation.x = curr_o.x;
-    pose.pose.orientation.y = curr_o.y; 
-    pose.pose.orientation.z = curr_o.z; 
+    odom.pose.pose.orientation.w = curr_o.w; 
+    odom.pose.pose.orientation.x = curr_o.x;
+    odom.pose.pose.orientation.y = curr_o.y; 
+    odom.pose.pose.orientation.z = curr_o.z; 
 
-    pose_pub.publish(pose); 
+    pose_pub.publish(odom); 
 
   }
 
