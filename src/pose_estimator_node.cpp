@@ -50,7 +50,7 @@ class PositionEstimator{
   ros::Subscriber detect_sub; 
   apriltag_ros::AprilTagDetectionArray curr_detect; 
 
-  int singleTagDetect(const apriltag_ros::AprilTagDetection det, Eigen::Vector3f curr_p, Eigen::Quaterniond curr_o){
+  int singleTagDetect(const apriltag_ros::AprilTagDetection det, Eigen::Vector3f* curr_p, Eigen::Quaterniond* curr_o){
 
     if (det.id.size()  > 1)
           return 1; 
@@ -59,56 +59,56 @@ class PositionEstimator{
 
     Eigen::Quaterniond rpy; 
 
-    rpy.w() = det.pose.orientation.w; 
-    rpy.x() = det.pose.orientation.x; 
-    rpy.y() = det.pose.orientation.y;
-    rpy.z() = det.pose.orientation.z;
+    rpy.w() = det.pose.pose.orientation.w; 
+    rpy.x() = det.pose.pose.orientation.x; 
+    rpy.y() = det.pose.pose.orientation.y;
+    rpy.z() = det.pose.pose.orientation.z;
 
     Eigen::vector3f glob = glob_pts.row(i-1).seq(0,3).transpose();
-    Eigen::Vector3f pose_c(det.pose.position.x, det.pose.position.y, det.pose.position.z);
+    Eigen::Vector3f pose_c(det.pose.pose.position.x, det.pose.pose.position.y, det.pose.pose.position.z);
 
-    curr_p = glob + pose_c;
-    curr_o = rpy;
+    *curr_p = glob + pose_c;
+    *curr_o = rpy;
 
     return 0;
 
   }
 
   void avgPoses(apriltag_ros::AprilTagDetectionArray det,
-                Eigen::Vector3f curr_p, Eigen::Quaterniond curr_o){
+                Eigen::Vector3f* curr_p, Eigen::Quaterniond* curr_o){
 
     int num_detect = AprilTagDetectionArray.detections.size();
     int num = 0;
 
     for (int i = 0; i < num_detect; i++){
 
-      Eigen::Vector3f curr_p; 
-      Eigen::Quaterniond curr_o; 
+      Eigen::Vector3f curr_ps; 
+      Eigen::Quaterniond curr_os; 
 
-      if (!SingleTagDetect(det[i], &curr_p, &curr_o)){
+      if (!SingleTagDetect(det[i], &curr_ps, &curr_os)){
 
-        curr_p(0) += curr_ps[i](0);
-        curr_p(1) += curr_ps[i](1);
-        curr_p(2) += curr_ps[i](2);
+        *curr_p(0) += curr_ps[i](0);
+        *curr_p(1) += curr_ps[i](1);
+        *curr_p(2) += curr_ps[i](2);
 
-        curr_o.w() += curr_os[i].w;
-        curr_o.x() += curr_os[i].x;
-        curr_o.y() += curr_os[i].y;
-        curr_o.z() += curr_os[i].z;
+        *curr_o.w() += curr_os[i].w;
+        *curr_o.x() += curr_os[i].x;
+        *curr_o.y() += curr_os[i].y;
+        *curr_o.z() += curr_os[i].z;
 
         num++;
       }
 
     }
 
-    curr_p(0) += curr_p(0)/num;
-    curr_p(1) += curr_p(1)/num;
-    curr_p(2) += curr_p(2)/num;
+    *curr_p(0) += curr_p(0)/num;
+    *curr_p(1) += curr_p(1)/num;
+    *curr_p(2) += curr_p(2)/num;
 
-    curr_o.w() += curr_o.w/num;
-    curr_o.x() += curr_o.x/num;
-    curr_o.y() += curr_o.y/num;
-    curr_o.z() += curr_o.z/num;
+    *curr_o.w() += curr_o.w/num;
+    *curr_o.x() += curr_o.x/num;
+    *curr_o.y() += curr_o.y/num;
+    *curr_o.z() += curr_o.z/num;
 
   }
 
