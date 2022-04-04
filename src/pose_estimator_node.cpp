@@ -1,5 +1,6 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Pose.h>
+#include <nav_msgs/Odometry.h>
 #include <apriltag_ros/AprilTagDetectionArray.h>
 #include <eigen3/Eigen/Dense>
 #include <vector>
@@ -16,7 +17,7 @@ class PositionEstimator{
 
   PositionEstimator(ros::NodeHandle nh){
     ROS_INFO("Starting Pose Estimator");
-    pos_pub = nh.advertise<geometry_msgs::Pose>("position", 100, true);
+    pos_pub = nh.advertise<nav_msgs::Odometry>("position", 100, true);
     ROS_INFO("Pose publisher initialized"); 
     detect_sub = nh.subscribe("/tag_detections", 10, &PositionEstimator::positionCallback, this);
     ROS_INFO("Detection subscriber initialized"); 
@@ -114,16 +115,16 @@ class PositionEstimator{
 
   void pubPoses(Eigen::Vector3f curr_p, Eigen::Quaternion curr_o){
 
-    geometry_msgs::Pose pose; 
+    nav_msgs::Odometry pose; 
 
-    pose.position.x = curr_p(0);
-    pose.position.y = curr_p(1); 
-    pose.position.z = curr_p(2);
+    pose.pose.position.x = curr_p(0);
+    pose.pose.position.y = curr_p(1); 
+    pose.pose.position.z = curr_p(2);
 
-    pose.orientation.w = curr_o.w; 
-    pose.orientation.x = curr_o.x;
-    pose.orientation.y = curr_o.y; 
-    pose.orientation.z = curr_o.z; 
+    pose.pose.orientation.w = curr_o.w; 
+    pose.pose.orientation.x = curr_o.x;
+    pose.pose.orientation.y = curr_o.y; 
+    pose.pose.orientation.z = curr_o.z; 
 
     pose_pub.publish(pose); 
 
@@ -141,7 +142,7 @@ class PositionEstimator{
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "pose_estimator_node");
+  ros::init(argc, argv, "pose_estimator");
   ROS_INFO("Initializing.");
 
   ros::NodeHandle nh("~");
