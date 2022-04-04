@@ -50,6 +50,6 @@ int main(int argc, char** argv) {
 
   Test test(nh);
 
-  ros::spin();
+  ros::spinOnce();
   return 0;
 }

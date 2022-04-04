@@ -19,7 +19,7 @@ class TrajGenerator {
 
   public:
   TrajGenerator(ros::NodeHandle nh) {
-    currentPoseSub = nh.subscribe("/current_state", 10, &TrajGenerator::currentStateCB, this);
+    currentPoseSub = nh.subscribe("/pose_estimator/position", 10, &TrajGenerator::currentStateCB, this);
     goalPoseSub = nh.subscribe("/goal", 10, &TrajGenerator::goalPoseCB, this);
 
     desiredStatePub = nh.advertise<trajectory_msgs::MultiDOFJointTrajectoryPoint>("/desired_state", 1);
