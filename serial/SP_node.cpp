@@ -97,18 +97,3 @@ int main()
 }   
 
 
-
-//ouble quatx, quaty, quatz, quatw
-//quatx = odom_msg.pose.pose.orientation.x;
-//quaty = odom_msg.pose.pose.orientation.y;
-//quatz = odom_msg.pose.pose.orientation.z;
-//quatw = odom_msg.pose.pose.orientation.w;
-//tf::Quaternion q(quatx, quaty, quatz, quatw);
-//tf::Matrix3x3 m(q);
-//double roll, pitch, yaw;
-//m.getRPY(roll, pitch, yaw);
-//roll = pos[6];
-//pitch = pos[7];
-//yaw = pos[8];
-
-
