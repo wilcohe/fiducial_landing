@@ -87,9 +87,11 @@ class PositionEstimator{
 
       if (!singleTagDetect(det.detections[i], &curr_ps, &curr_os)){
 
-        &curr_p(0) += &curr_ps(0);
-        curr_p[1] += curr_ps[1];
-        curr_p[2] += curr_ps[2];
+        // curr_p(0) += curr_ps(0);
+        // curr_p[1] += curr_ps[1];
+        // curr_p[2] += curr_ps[2];
+
+        curr_p = curr_p + curr_ps
 
         curr_o->w() += curr_os.w();
         curr_o->x() += curr_os.x();
@@ -103,9 +105,11 @@ class PositionEstimator{
 
     num = (float)num; 
 
-    curr_p[0] += curr_p[0]/num;
-    curr_p[1] += curr_p[1]/num;
-    curr_p[2] += curr_p[2]/num;
+    // curr_p[0] += curr_p[0]/num;
+    // curr_p[1] += curr_p[1]/num;
+    // curr_p[2] += curr_p[2]/num;
+
+    curr_p = curr_p * 1.0/num
 
     curr_o->w() += curr_o->w()/num;
     curr_o->x() += curr_o->x()/num;
