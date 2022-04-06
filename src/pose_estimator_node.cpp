@@ -64,7 +64,7 @@ class PositionEstimator{
     rpy.y() = det.pose.pose.pose.orientation.y;
     rpy.z() = det.pose.pose.pose.orientation.z;
 
-    Eigen::Vector3f glob = glob_pts.row(id-1).seq(0,3).transpose();
+    Eigen::Vector3f glob(glob_pts<1, 3>.block(id-1, 0));
     Eigen::Vector3f pose_c(det.pose.pose.pose.position.x, det.pose.pose.pose.position.y, det.pose.pose.pose.position.z);
 
     *curr_p = glob + pose_c;
@@ -101,7 +101,7 @@ class PositionEstimator{
 
     }
 
-    num = (float)num
+    num = (float)num; 
 
     curr_p[0] += curr_p[0]/num;
     curr_p[1] += curr_p[1]/num;
