@@ -64,7 +64,7 @@ class PositionEstimator{
     rpy.y() = det.pose.pose.pose.orientation.y;
     rpy.z() = det.pose.pose.pose.orientation.z;
 
-    Eigen::Vector3f glob = glob_pts.row(i-1).seq(0,3).transpose();
+    Eigen::Vector3f glob = glob_pts.row(id-1).seq(0,3).transpose();
     Eigen::Vector3f pose_c(det.pose.pose.pose.position.x, det.pose.pose.pose.position.y, det.pose.pose.pose.position.z);
 
     *curr_p = glob + pose_c;
@@ -85,30 +85,32 @@ class PositionEstimator{
       Eigen::Vector3f curr_ps; 
       Eigen::Quaterniond curr_os; 
 
-      if (!singleTagDetect(det[i], &curr_ps, &curr_os)){
+      if (!singleTagDetect(det.detections[i], &curr_ps, &curr_os)){
 
         curr_p[0] += curr_ps[0];
         curr_p[1] += curr_ps[1];
         curr_p[2] += curr_ps[2];
 
-        curr_o->w() += curr_os.w;
-        curr_o->x() += curr_os.x;
-        curr_o->y() += curr_os.y;
-        curr_o->z() += curr_osz;
+        curr_o->w() += curr_os.w();
+        curr_o->x() += curr_os.x();
+        curr_o->y() += curr_os.y();
+        curr_o->z() += curr_os.z();
 
         num++;
       }
 
     }
 
+    num = (float)num
+
     curr_p[0] += curr_p[0]/num;
     curr_p[1] += curr_p[1]/num;
     curr_p[2] += curr_p[2]/num;
 
-    curr_o->w() += curr_o->w/num;
-    curr_o->x() += curr_o->x/num;
-    curr_o->y() += curr_o->y/num;
-    curr_o->z() += curr_o->z/num;
+    curr_o->w() += curr_o->w()/num;
+    curr_o->x() += curr_o->x()/num;
+    curr_o->y() += curr_o->y()/num;
+    curr_o->z() += curr_o->z()/num;
 
   }
 
@@ -121,10 +123,10 @@ class PositionEstimator{
     odom.pose.pose.position.y = curr_p[1]; 
     odom.pose.pose.position.z = curr_p[2];
 
-    odom.pose.pose.orientation.w = curr_o.w; 
-    odom.pose.pose.orientation.x = curr_o.x;
-    odom.pose.pose.orientation.y = curr_o.y; 
-    odom.pose.pose.orientation.z = curr_o.z; 
+    odom.pose.pose.orientation.w = curr_o.w(); 
+    odom.pose.pose.orientation.x = curr_o.x();
+    odom.pose.pose.orientation.y = curr_o.y(); 
+    odom.pose.pose.orientation.z = curr_o.z(); 
 
     pos_pub.publish(odom); 
 
