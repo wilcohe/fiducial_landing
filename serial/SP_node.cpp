@@ -55,7 +55,7 @@ void poseCallback(const geometry_msgs::Pose &msg){
 ros::Subscriber<trajectory_msgs::MultiDOFJointTrajectoryPoint> sub("/desired_state", trajCallback);
 ros::Subscriber<geometry_msgs::Pose> pose_sub("/position_estimate", poseCallback); 
 
-char *IP = "192.168.6.1";
+char *IP = "192.168.7.1";
 
 traj_type send_traj(void){
 
