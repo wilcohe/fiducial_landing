@@ -37,10 +37,6 @@ class PositionEstimator{
 
     ROS_INFO("Finished Pose Estimator");
 
-    avgPoses(curr_detect, &position, &orientation); 
-
-    pubPoses(position, orientation); 
-
 
   }
 
@@ -142,6 +138,10 @@ class PositionEstimator{
 
     curr_detect = det;  
 
+    avgPoses(curr_detect, &position, &orientation); 
+
+    pubPoses(position, orientation); 
+
   }
 
 }; 
@@ -154,7 +154,6 @@ int main(int argc, char** argv)
   ros::NodeHandle nh("~");
 
   PositionEstimator pose_estimator(nh);  
-
 
  // ROS_INFO_THROTTLE(1.0, "Pose estimator initialized. "); 
   ros::spin(); 
