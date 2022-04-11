@@ -14,6 +14,7 @@ ros::Publisher statePub("/current_state", &odom_msg);
 
 traj_type* next_traj = new traj_type; 
 pose* curr_pose = new pose; 
+bool* detection = new bool; 
 
 void trajCallback(const trajectory_msgs::MultiDOFJointTrajectoryPoint &msg){
     printf("Received Subscribed Message");
@@ -62,7 +63,14 @@ traj_type send_traj(void){
     return *next_traj; 
 }
 
+pose_type send_pose(void){
 
+    return *curr_pose; 
+}
+
+bool send_detect(void){
+    return *detection; 
+}
 
 int main()
 {

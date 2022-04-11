@@ -20,5 +20,7 @@ typdef struct pose{
 
  EXTERNC pose send_pose(void); 
 
+ EXTERNC bool send_detect(void); 
+
 
  #undef EXTERNC

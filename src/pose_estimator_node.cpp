@@ -1,5 +1,6 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Pose.h>
+#include <std_msgs/Bool.h>
 #include <nav_msgs/Odometry.h>
 #include <apriltag_ros/AprilTagDetectionArray.h>
 #include <eigen3/Eigen/Dense>
@@ -18,6 +19,7 @@ class PositionEstimator{
   PositionEstimator(ros::NodeHandle nh){
     ROS_INFO("Starting Pose Estimator");
     pos_pub = nh.advertise<nav_msgs::Odometry>("position", 100, true);
+    bool_pub = nh.advertise<std_msgs::Bool>("detected", 100, true); 
     ROS_INFO("Pose publisher initialized"); 
     detect_sub = nh.subscribe("/tag_detections", 10, &PositionEstimator::positionCallback, this);
     ROS_INFO("Detection subscriber initialized"); 
@@ -43,6 +45,7 @@ class PositionEstimator{
  private: 
   Eigen::Matrix4f glob_pts;  
   ros::Publisher pos_pub; 
+  ros::Publisher bool_pub; 
   ros::Subscriber detect_sub; 
   apriltag_ros::AprilTagDetectionArray curr_detect; 
 
@@ -155,8 +158,18 @@ class PositionEstimator{
 
     if (num > 0)
       pubPoses(position, orientation); 
+
+      std_msgs::Bool detection; 
+      detection.data = true; 
+      bool_pub.publish(detection); 
+
       position = Eigen::Vector3f::Zero(); 
       orientation = Eigen::Quaterniond::Identity(); 
+  }
+  else{
+    std_msgs::Bool detection; 
+    detection.data = false; 
+    bool_pub.publish(detection); 
   }
 
 }; 
