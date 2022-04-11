@@ -104,18 +104,22 @@ class PositionEstimator{
 
     }
 
-    num = (float)num; 
+    float div = (float)num; 
 
-    // curr_p[0] += curr_p[0]/num;
-    // curr_p[1] += curr_p[1]/num;
-    // curr_p[2] += curr_p[2]/num;
+    if (num > 0){
 
-    *curr_p = *curr_p * 1.0/num; 
+      // curr_p[0] += curr_p[0]/num;
+      // curr_p[1] += curr_p[1]/num;
+      // curr_p[2] += curr_p[2]/num;
 
-    curr_o->w() += curr_o->w()/num;
-    curr_o->x() += curr_o->x()/num;
-    curr_o->y() += curr_o->y()/num;
-    curr_o->z() += curr_o->z()/num;
+      *curr_p = *curr_p * 1.0/div; 
+
+      curr_o->w() += curr_o->w()/div;
+      curr_o->x() += curr_o->x()/div;
+      curr_o->y() += curr_o->y()/div;
+      curr_o->z() += curr_o->z()/div;
+
+    }
 
   }
 
