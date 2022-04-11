@@ -155,7 +155,8 @@ class PositionEstimator{
 
     if (num > 0)
       pubPoses(position, orientation); 
-
+      position = Eigen::Vector3f::Zero(); 
+      orientation = Eigen::Quaterniond::Identity(); 
   }
 
 }; 
