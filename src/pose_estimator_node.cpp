@@ -65,6 +65,9 @@ class PositionEstimator{
     Eigen::Vector3f glob(glob_pts.block<1, 3>(id-1, 0));
     Eigen::Vector3f pose_c(det.pose.pose.pose.position.x, det.pose.pose.pose.position.y, det.pose.pose.pose.position.z);
 
+    std::cout << "Found Position: " << det.pose.pose.pose.position.x << " " << det.pose.pose.pose.position.y << " " << det.pose.pose.pose.position.z << "\n"; 
+ 
+
     *curr_p = glob + pose_c;
     *curr_o = rpy;
 
@@ -73,10 +76,10 @@ class PositionEstimator{
   }
 
   void avgPoses(apriltag_ros::AprilTagDetectionArray det,
-                Eigen::Vector3f* curr_p, Eigen::Quaterniond* curr_o){
+                Eigen::Vector3f* curr_p, Eigen::Quaterniond* curr_o, int &num){
 
     int num_detect = det.detections.size();
-    int num = 0;
+    // int num = 0;
 
     for (int i = 0; i < num_detect; i++){
 
@@ -142,9 +145,12 @@ class PositionEstimator{
 
     curr_detect = det;  
 
-    avgPoses(curr_detect, &position, &orientation); 
+    int num = 0; 
 
-    pubPoses(position, orientation); 
+    avgPoses(curr_detect, &position, &orientation, num); 
+
+    if (num > 0)
+      pubPoses(position, orientation); 
 
   }
 
