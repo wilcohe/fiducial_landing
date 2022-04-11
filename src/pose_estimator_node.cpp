@@ -53,6 +53,8 @@ class PositionEstimator{
     
     int id = det.id[0];
 
+    std::cout << "Found a tag: " << id << "\n";
+
     Eigen::Quaterniond rpy; 
 
     rpy.w() = det.pose.pose.pose.orientation.w; 
@@ -81,9 +83,7 @@ class PositionEstimator{
       Eigen::Vector3f curr_ps; 
       Eigen::Quaterniond curr_os; 
 
-      if (!singleTagDetect(det.detections[i], &curr_ps, &curr_os)){
-
-        std::cout << "Found a tag: " << id << "\n"; 
+      if (!singleTagDetect(det.detections[i], &curr_ps, &curr_os)){ 
 
         // curr_p(0) += curr_ps(0);
         // curr_p[1] += curr_ps[1];
