@@ -148,7 +148,7 @@ class PositionEstimator{
 
   void positionCallback(const apriltag_ros::AprilTagDetectionArray det){
 
-    ROS_INFO("Position Called");
+    // ROS_INFO("Position Called");
 
     curr_detect = det;  
 
