@@ -170,6 +170,7 @@ class PositionEstimator{
       detection.data = false; 
       bool_pub.publish(detection); 
     }
+  }
 }; 
 
 int main(int argc, char** argv)
@@ -185,3 +186,4 @@ int main(int argc, char** argv)
   ros::spin(); 
 
 }
+
