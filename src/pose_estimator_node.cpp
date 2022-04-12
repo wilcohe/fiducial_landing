@@ -165,13 +165,11 @@ class PositionEstimator{
 
       position = Eigen::Vector3f::Zero(); 
       orientation = Eigen::Quaterniond::Identity(); 
-  }
-  else{
-    std_msgs::Bool detection; 
-    detection.data = false; 
-    bool_pub.publish(detection); 
-  }
-
+    } else {
+      std_msgs::Bool detection; 
+      detection.data = false; 
+      bool_pub.publish(detection); 
+    }
 }; 
 
 int main(int argc, char** argv)
