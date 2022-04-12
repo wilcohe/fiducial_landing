@@ -13,7 +13,7 @@ ros::Publisher statePub("/current_state", &odom_msg);
 
 
 traj_type* next_traj = new traj_type; 
-pose* curr_pose = new pose; 
+pose_type* curr_pose = new pose; 
 bool* detection = new bool; 
 
 void trajCallback(const trajectory_msgs::MultiDOFJointTrajectoryPoint &msg){
