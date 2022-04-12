@@ -156,7 +156,7 @@ class PositionEstimator{
 
     avgPoses(curr_detect, &position, &orientation, num); 
 
-    if (num > 0)
+    if (num > 0) {
       pubPoses(position, orientation); 
 
       std_msgs::Bool detection; 
