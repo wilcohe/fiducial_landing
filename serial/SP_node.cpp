@@ -2,6 +2,7 @@
 #include <ros.h>
 #include <stdio.h>
 #include <nav_msgs/Odometry.h>
+#include <std_msgs/Bool.h>
 #include <trajectory_msgs/MultiDOFJointTrajectoryPoint.h>
 #include <vector>
 #include <chrono>
@@ -15,6 +16,7 @@ ros::Publisher statePub("/current_state", &odom_msg);
 
 traj_type* next_traj = new traj_type; 
 pose_type* curr_pose = new pose_type; 
+bool* detection = new bool; 
 
 void trajCallback(const trajectory_msgs::MultiDOFJointTrajectoryPoint &msg){
     printf("Received Subscribed Message");
@@ -54,8 +56,13 @@ void poseCallback(const nav_msgs::Odometry &msg){
 
 }
 
+void boolCallback(const std_msgs::Bool &msg){
+    *detection = msg.data; 
+}
+
 ros::Subscriber<trajectory_msgs::MultiDOFJointTrajectoryPoint> sub("/desired_state", trajCallback);
 ros::Subscriber<nav_msgs::Odometry> pose_sub("/pose_estimator/position", poseCallback); 
+ros::Subscriber<std_msgs::Bool> tag_sub("/pose_estimator/detected", boolCallback); 
 
 char *IP = "192.168.6.1";
 
@@ -64,13 +71,23 @@ traj_type send_traj(void){
     return *next_traj; 
 }
 
+pose_type send_pose(void){
+
+    return *curr_pose; 
+}
+
+bool send_detect(void){
+    return *detection; 
+}
+
 
 int main()
 {
     nh.initNode(IP);
     nh.subscribe(sub);
     nh.subscribe(pose_sub); 
-    nh.advertise(statePub);
+    nh.subscribe(tag_sub); 
+    // nh.advertise(statePub);
     std::cout << ros::PROTOCOL_VER; 
     while(1){
         // double *pos = get_pos_c();   
