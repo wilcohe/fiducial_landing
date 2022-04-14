@@ -36,7 +36,7 @@ class Test {
     }
   }
 
-  void updateGoal(std_msgs::int case_msg) {
+  void updateGoal(std_msgs::Int16 case_msg) {
     state = case_msg.data;
     publishGoal(state);
   }
