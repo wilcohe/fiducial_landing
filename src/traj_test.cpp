@@ -21,6 +21,7 @@ class Test {
   private:
   ros::Subscriber currentPoseSub;
   ros::Subscriber aprilStateSub;
+  ros::Subscriber CaseSub;
   ros::Publisher goalPosePub;
   Eigen::Affine3d current_pose_;
 
@@ -31,14 +32,12 @@ class Test {
 
   void activate(std_msgs::Bool state_msg) {
     if (state_msg.data) {
-      state = 2;
-      publishGoal(state);
+      publishGoal(2);
     }
   }
 
   void updateGoal(std_msgs::Int16 case_msg) {
-    state = case_msg.data;
-    publishGoal(state);
+    publishGoal(case_msg.data);
   }
 
   void publishGoal(int state) {
