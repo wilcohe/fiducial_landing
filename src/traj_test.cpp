@@ -11,9 +11,9 @@
 class Test {
   public: 
   Test(ros::NodeHandle nh) {
-    ros::param::get("/goal_state", state);
     currentPoseSub = nh.subscribe("/pose_estimator/position", 1, &Test::getCurrent, this);
     aprilStateSub = nh.subscribe("/april_state", 1, &Test::activate, this);
+    caseSub = nh.subscribe("/april_case", 1, &Test::updateGoal, this);
     goalPosePub = nh.advertise<nav_msgs::Odometry>("/goal", 1, true);
   }
 
@@ -22,7 +22,6 @@ class Test {
   ros::Subscriber aprilStateSub;
   ros::Publisher goalPosePub;
   Eigen::Affine3d current_pose_;
-  std::string state;
 
   void getCurrent(const nav_msgs::Odometry::ConstPtr& odom) {
     // store current position in our planner
@@ -31,27 +30,33 @@ class Test {
 
   void activate(std_msgs::Bool state_msg) {
     if (state_msg.data) {
-      publishGoal();
+      state = 2;
+      publishGoal(state);
     }
   }
 
-  void publishGoal() {
+  void updateGoal(std_msgs::int case_msg) {
+    state = case_msg.data;
+    publishGoal(state);
+  }
+
+  void publishGoal(int state) {
     nav_msgs::Odometry goal;
     tf2::Quaternion goal_quat;
     switch(state) {
-      case 'l': // land
+      case 0: // land
         goal.pose.pose.position.x = 0.0; 
         goal.pose.pose.position.y = 0.0; 
         goal.pose.pose.position.z = 0.0; 
         goal_quat.setRPY(0, 0, 0);
         goal.pose.pose.orientation = tf2::toMsg(goal_quat);
-      case 'g': // guide to above landing zone 
+      case 1: // guide to above landing zone 
         goal.pose.pose.position.x = 0.0; 
         goal.pose.pose.position.y = 0.0; 
         goal.pose.pose.position.z = 0.75; 
         goal_quat.setRPY(0, 0, 0);
         goal.pose.pose.orientation = tf2::toMsg(goal_quat);
-      case 'h': // hover in place
+      case 2: // hover in place
         tf::poseEigenToMsg(current_pose_, goal.pose.pose);
         goal.pose.pose.position.z = 0.75; 
     }
