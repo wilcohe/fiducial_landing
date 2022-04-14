@@ -21,7 +21,7 @@ class Test {
   private:
   ros::Subscriber currentPoseSub;
   ros::Subscriber aprilStateSub;
-  ros::Subscriber CaseSub;
+  ros::Subscriber caseSub;
   ros::Publisher goalPosePub;
   Eigen::Affine3d current_pose_;
 
