@@ -2,6 +2,7 @@
 #include <geometry_msgs/Pose.h>
 #include <nav_msgs/Odometry.h>
 #include <eigen3/Eigen/Dense>
+#include <std_msgs/Bool.h>
 #include <eigen_conversions/eigen_msg.h>
 #include <tf/transform_datatypes.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
@@ -10,7 +11,7 @@
 class Test {
   public: 
   Test(ros::NodeHandle nh) {
-    ros::param::get("/goal_state", state);
+    ros::param::get("/goal_state", &state);
     currentPoseSub = nh.subscribe("/pose_estimator/position", 1, &Test::getCurrent, this);
     aprilStateSub = nh.subscribe("/april_state", 1, &&TrajGenerator::activate, this);
     goalPosePub = nh.advertise<nav_msgs::Odometry>("/goal", 1, true);
@@ -51,7 +52,7 @@ class Test {
         goal_quat.setRPY(0, 0, 0);
         goal.pose.pose.orientation = tf2::toMsg(goal_quat);
       case 'h': // hover in place
-        tf::poseEigenToMsg(current_pose_, goal.pose.pose)
+        tf::poseEigenToMsg(current_pose_, goal.pose.pose);
         goal.pose.pose.position.z = 0.75; 
     }
     goalPosePub.publish(goal);
