@@ -22,7 +22,7 @@ class Test {
   ros::Subscriber aprilStateSub;
   ros::Publisher goalPosePub;
   Eigen::Affine3d current_pose_;
-  char state;
+  std::string state;
 
   void getCurrent(const nav_msgs::Odometry::ConstPtr& odom) {
     // store current position in our planner
