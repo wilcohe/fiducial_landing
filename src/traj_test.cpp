@@ -11,9 +11,9 @@
 class Test {
   public: 
   Test(ros::NodeHandle nh) {
-    ros::param::get("/goal_state", &state);
+    ros::param::get("/goal_state", state);
     currentPoseSub = nh.subscribe("/pose_estimator/position", 1, &Test::getCurrent, this);
-    aprilStateSub = nh.subscribe("/april_state", 1, &&TrajGenerator::activate, this);
+    aprilStateSub = nh.subscribe("/april_state", 1, &Test::activate, this);
     goalPosePub = nh.advertise<nav_msgs::Odometry>("/goal", 1, true);
   }
 
