@@ -3,7 +3,7 @@
 #include <nav_msgs/Odometry.h>
 #include <eigen3/Eigen/Dense>
 #include <std_msgs/Bool.h>
-#include <std_msgs/Int.h>
+#include <std_msgs/Int16.h>
 #include <eigen_conversions/eigen_msg.h>
 #include <tf/transform_datatypes.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
