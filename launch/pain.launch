@@ -7,6 +7,8 @@
   <node pkg="april_land" type="pose_estimator_node" name="pose_estimator"/>
 
 	<node pkg="april_land" type="trajectory_generation_node" name="trajectory_generation_node" />
+	
+	<node pkg="april_land" type="trajectory_test_node" name="trajectory_test_node" />
 
 	<!--<node pkg="rosserial_python" type="serial_node.py" name="serial_node" args="tcp _port:=/dev/ttyACM0 _baud:=115200" /> -->
 

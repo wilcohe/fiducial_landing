@@ -71,6 +71,6 @@ int main(int argc, char** argv) {
 
   Test test(nh);
 
-  ros::spinOnce();
+  ros::spin();
   return 0;
 }
