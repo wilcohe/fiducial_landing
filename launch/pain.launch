@@ -4,7 +4,6 @@
 
 	<include file="/home/ubuntu/workspace/src/apriltag_ros/apriltag_ros/launch/continuous_detection.launch"/>
 
-	<param name="/goal_state", type="int", value="2" />
   <node pkg="april_land" type="pose_estimator_node" name="pose_estimator"/>
 
 	<node pkg="april_land" type="trajectory_generation_node" name="trajectory_generation_node" />
