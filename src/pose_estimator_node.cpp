@@ -23,19 +23,21 @@ class PositionEstimator{
     ROS_INFO("Pose publisher initialized"); 
     detect_sub = nh.subscribe("/tag_detections", 10, &PositionEstimator::positionCallback, this);
     ROS_INFO("Detection subscriber initialized"); 
-    for (int i = 0; i < 4; i++){
-      if (i < 2)
-        glob_pts(i, 0) = 0.5;
-      else
-         glob_pts(i, 0) = -0.5;
-      if (i < 1 || i > 2)
-        glob_pts(i, 1) = 0.5; 
-      else
-        glob_pts(i, 1) = -0.5;
+    // for (int i = 0; i < 4; i++){
+    //   if (i < 2)
+    //     glob_pts(i, 0) = 0.5;
+    //   else
+    //      glob_pts(i, 0) = -0.5;
+    //   if (i < 1 || i > 2)
+    //     glob_pts(i, 1) = 0.5; 
+    //   else
+    //     glob_pts(i, 1) = -0.5;
 
-      glob_pts(i, 2) = 0.1; 
-      glob_pts(i, 3) = 1.0; 
-    }
+    //   glob_pts(i, 2) = 0.1; 
+    //   glob_pts(i, 3) = 1.0; 
+    // }
+
+    glob_pts = Eigen::Matrix4f::Zero(); 
 
     ROS_INFO("Finished Pose Estimator");
 
