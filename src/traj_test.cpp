@@ -50,15 +50,18 @@ class Test {
         goal.pose.pose.position.z = 0.0; 
         goal_quat.setRPY(0, 0, 0);
         goal.pose.pose.orientation = tf2::toMsg(goal_quat);
+        break;
       case 1: // guide to above landing zone 
         goal.pose.pose.position.x = 0.0; 
         goal.pose.pose.position.y = 0.0; 
         goal.pose.pose.position.z = 0.75; 
         goal_quat.setRPY(0, 0, 0);
         goal.pose.pose.orientation = tf2::toMsg(goal_quat);
+        break;
       case 2: // hover in place
         tf::poseEigenToMsg(current_pose_, goal.pose.pose);
         goal.pose.pose.position.z = 0.75; 
+        break;
     }
     goalPosePub.publish(goal);
     ROS_INFO("published goal");
